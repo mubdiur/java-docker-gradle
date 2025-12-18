@@ -1,0 +1,6 @@
+services:
+  demo-project-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: demo-project-app
