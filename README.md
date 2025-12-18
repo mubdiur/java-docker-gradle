@@ -20,10 +20,10 @@ A modern, containerized Java application template combining the power of **Java 
 ├── 📁 app/
 │   ├── 📁 src/
 │   │   ├── 📁 main/
-│   │   │   └── 📁 java/com/demo/
+│   │   │   └── 📁 java/org/javadocker/
 │   │   │       └── 📄 App.java          # Main application class
 │   │   └── 📁 test/
-│   │       └── 📁 java/com/demo/
+│   │       └── 📁 java/org/javadocker/
 │   │           └── 📄 AppTest.java      # Unit tests
 │   └── 📄 build.gradle.kts              # Gradle build configuration
 ├── 📄 Dockerfile                       # Multi-stage Docker configuration
@@ -60,10 +60,10 @@ cd java-docker-gradle
 
 ```bash
 # Build the Docker image
-docker build -t demo-project-app .
+docker build -t java-docker-gradle .
 
 # Run the container
-docker run --rm demo-project-app
+docker run --rm java-docker-gradle
 ```
 
 ### Option 3: Railpack Cloud Deployment
@@ -198,15 +198,11 @@ The script updates:
 The `App.java` class provides a simple "Hello World!" implementation:
 
 ```java
-package com.demo;
+package org.javadocker;
 
 public class App {
-    public String getGreeting() {
-        return "Hello World!";
-    }
-
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        System.out.println("🔥 java-docker-gradle is alive 🔥");
     }
 }
 ```
@@ -231,7 +227,7 @@ Configure application behavior via environment variables:
 
 ```bash
 # Set custom environment variables
-docker run -e APP_ENV=production demo-project-app
+docker run -e APP_ENV=production java-docker-gradle
 ```
 
 ### Custom Docker Compose
@@ -240,7 +236,7 @@ Extend the docker-compose.yml for additional services:
 
 ```yaml
 services:
-  demo-project-app:
+  java-docker-gradle:
     build: .
     environment:
       - SPRING_PROFILES_ACTIVE=prod
@@ -254,7 +250,7 @@ The `railpack.json` file provides cloud-native deployment configuration:
 
 ```json
 {
-  "name": "demo-project",
+  "name": "java-docker-gradle",
   "type": "java",
   "build": {
     "builder": "gradle",

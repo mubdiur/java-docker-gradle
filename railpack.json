@@ -1,5 +1,5 @@
 {
-  "name": "demo-project",
+  "name": "java-docker-gradle",
   "version": "1.0.0",
   "description": "A modern Java application with Gradle build system",
   "main": "app.jar",
@@ -11,7 +11,11 @@
     "outputFile": "*.jar"
   },
   "run": {
-    "command": ["java", "-jar", "app.jar"],
+    "command": [
+      "java",
+      "-jar",
+      "app.jar"
+    ],
     "port": 8080,
     "healthCheck": {
       "path": "/actuator/health",
@@ -54,8 +58,8 @@
     "test": "./gradlew test",
     "clean": "./gradlew clean",
     "run": "./gradlew run",
-    "docker:build": "docker build -t demo-project-app .",
-    "docker:run": "docker run --rm demo-project-app",
+    "docker:build": "docker build -t java-docker-gradle .",
+    "docker:run": "docker run --rm java-docker-gradle",
     "railpack:build": "railpack build",
     "railpack:deploy": "railpack deploy"
   },
@@ -63,7 +67,13 @@
     "author": "Your Name",
     "license": "MIT",
     "repository": "https://github.com/yourusername/java-docker-gradle",
-    "keywords": ["java", "gradle", "docker", "railpack", "microservice"],
+    "keywords": [
+      "java",
+      "gradle",
+      "docker",
+      "railpack",
+      "microservice"
+    ],
     "framework": "gradle",
     "javaVersion": "21"
   },
