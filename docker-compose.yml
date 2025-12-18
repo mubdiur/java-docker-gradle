@@ -1,6 +1,6 @@
 services:
-  demo-project-app:
+  java-docker-gradle:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: demo-project-app
+    container_name: java-docker-gradle

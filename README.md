@@ -1,4 +1,4 @@
-# 🚀 Java Docker Gradle Project
+# java-docker-gradle
 
 A modern, containerized Java application template combining the power of **Java 21**, **Docker**, and **Gradle** for streamlined development and deployment. This project serves as the perfect starting point for building robust, scalable Java applications with cloud-native architecture.
 

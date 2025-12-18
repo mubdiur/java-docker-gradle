@@ -1,31 +1,49 @@
-# Use the official Eclipse Temurin (Adoptium) OpenJDK 17 slim image as the base image
-FROM eclipse-temurin:21-jdk-alpine AS build
+# =========================
+# Build Stage
+# =========================
+FROM eclipse-temurin:21-jdk AS build
 
-# Set the working directory inside the container
 WORKDIR /app
 
-# Install Gradle
-RUN apk add --no-cache curl unzip
-RUN curl -L https://services.gradle.org/distributions/gradle-8.5-bin.zip -o gradle.zip && \
-    unzip gradle.zip -d /opt && \
-    rm gradle.zip && \
-    ln -s /opt/gradle-8.5/bin/gradle /usr/bin/gradle
+# 1. Install Basics
+RUN apt-get update && \
+    apt-get install -y bash && \
+    rm -rf /var/lib/apt/lists/*
 
-# Copy the Gradle project files
+# 2. Copy ONLY the Gradle Wrapper first
+#    We copy specific files so Docker doesn't "see" changes 
+#    in libs.versions.toml yet.
+COPY gradlew .
+COPY gradle/wrapper gradle/wrapper
+
+RUN chmod +x gradlew
+
+# 3. Download Gradle Distribution (The Heavy Lift)
+#    This layer will now ONLY invalidate if you change 
+#    gradle-wrapper.properties, not your dependencies.
+RUN ./gradlew --version --no-daemon
+
+# 4. Copy Project Configuration
+#    Now we copy the rest of the 'gradle' folder (including libs.versions.toml)
+#    and the settings files.
+COPY gradle gradle
+COPY settings.gradle.kts gradle.properties ./
+COPY app/build.gradle.kts app/
+
+# 5. Download Project Dependencies
+#    This runs if libs.versions.toml or build.gradle.kts changes.
+RUN ./gradlew dependencies --no-daemon
+
+# 6. Copy Source Code & Build
 COPY . .
+RUN ./gradlew build --no-daemon
 
-# Build the application using Gradle
-RUN gradle build --no-daemon
+# =========================
+# Runtime Stage
+# =========================
+FROM eclipse-temurin:21-jre
 
-# Runtime stage
-FROM eclipse-temurin:21-jre-alpine
-
-# Set the working directory
 WORKDIR /app
-
-# Copy the built JAR from the build stage
-# Use wildcards to handle version-specific naming
 COPY --from=build /app/app/build/libs/*.jar app.jar
 
-# Command to run the Java application when the container starts
 CMD ["java", "-jar", "app.jar"]
