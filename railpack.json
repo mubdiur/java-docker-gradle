@@ -1,0 +1,80 @@
+{
+  "name": "demo-project",
+  "version": "1.0.0",
+  "description": "A modern Java application with Gradle build system",
+  "main": "app.jar",
+  "type": "java",
+  "build": {
+    "builder": "gradle",
+    "buildCommand": "./gradlew build -x test",
+    "outputDirectory": "app/build/libs",
+    "outputFile": "*.jar"
+  },
+  "run": {
+    "command": ["java", "-jar", "app.jar"],
+    "port": 8080,
+    "healthCheck": {
+      "path": "/actuator/health",
+      "interval": 30,
+      "timeout": 10,
+      "retries": 3
+    }
+  },
+  "environment": {
+    "JAVA_OPTS": "-Xmx512m -Xms256m",
+    "SPRING_PROFILES_ACTIVE": "production"
+  },
+  "deploy": {
+    "replicas": 1,
+    "resources": {
+      "cpu": "500m",
+      "memory": "512Mi"
+    },
+    "autoscaling": {
+      "enabled": false,
+      "minReplicas": 1,
+      "maxReplicas": 5,
+      "targetCPUUtilization": 70
+    }
+  },
+  "routes": [
+    {
+      "path": "/",
+      "dest": "http://localhost:8080"
+    }
+  ],
+  "mounts": [],
+  "secrets": [],
+  "dependencies": {
+    "java": ">=21.0.0",
+    "gradle": ">=8.0.0"
+  },
+  "scripts": {
+    "build": "./gradlew build",
+    "test": "./gradlew test",
+    "clean": "./gradlew clean",
+    "run": "./gradlew run",
+    "docker:build": "docker build -t demo-project-app .",
+    "docker:run": "docker run --rm demo-project-app",
+    "railpack:build": "railpack build",
+    "railpack:deploy": "railpack deploy"
+  },
+  "metadata": {
+    "author": "Your Name",
+    "license": "MIT",
+    "repository": "https://github.com/yourusername/java-docker-gradle",
+    "keywords": ["java", "gradle", "docker", "railpack", "microservice"],
+    "framework": "gradle",
+    "javaVersion": "21"
+  },
+  "ignore": [
+    ".git",
+    ".gradle",
+    "build",
+    "app/build",
+    "*.log",
+    ".DS_Store",
+    "node_modules",
+    ".railpack"
+  ]
+}
