@@ -32,12 +32,12 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = "com.demo.App"
+    mainClass = "org.javadocker.App"
 }
 
 tasks.jar {
     manifest {
-        attributes["Main-Class"] = "com.demo.App"
+        attributes["Main-Class"] = "org.javadocker.App"
     }
     // This line ensures that all dependencies are included in the JAR
     from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
